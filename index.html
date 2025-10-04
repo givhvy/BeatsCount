@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beats & Loops Counter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Beats & Loops Tracker</h1>
+
+        <div class="tables-container">
+            <div class="table-card" id="beats-card">
+                <h2>Number of Beats of Today</h2>
+                <div class="count" id="beats-count">0</div>
+                <div class="info">
+                    <span class="file-type">.wav files</span>
+                    <span class="date" id="beats-date"></span>
+                </div>
+                <input type="file" webkitdirectory directory id="beats-folder-input" style="display: none;">
+                <button class="select-folder-btn" id="select-beats-folder">Select Folder</button>
+                <div class="folder-path" id="beats-folder-path">No folder selected</div>
+            </div>
+
+            <div class="table-card" id="loops-card">
+                <h2>Number of Loops of Today</h2>
+                <div class="count" id="loops-count">0</div>
+                <div class="info">
+                    <span class="file-type">.mp3 & .wav files</span>
+                    <span class="date" id="loops-date"></span>
+                </div>
+                <input type="file" webkitdirectory directory id="loops-folder-input" style="display: none;">
+                <button class="select-folder-btn" id="select-loops-folder">Select Folder</button>
+                <div class="folder-path" id="loops-folder-path">No folder selected</div>
+            </div>
+        </div>
+
+        <button class="refresh-btn" id="refresh-btn">Refresh Counts</button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

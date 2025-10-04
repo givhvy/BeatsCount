@@ -1,0 +1,147 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1000px;
+    width: 100%;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.tables-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.table-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.table-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.table-card h2 {
+    color: #667eea;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.count {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #764ba2;
+    margin: 20px 0;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.file-type {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.date {
+    font-size: 0.85rem;
+    color: #999;
+}
+
+.select-folder-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: 15px;
+}
+
+.select-folder-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.select-folder-btn:active {
+    transform: scale(0.98);
+}
+
+.folder-path {
+    font-size: 0.8rem;
+    color: #999;
+    word-break: break-all;
+    min-height: 20px;
+}
+
+.refresh-btn {
+    display: block;
+    margin: 0 auto;
+    background: white;
+    color: #667eea;
+    border: 2px solid white;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.refresh-btn:hover {
+    background: transparent;
+    color: white;
+    transform: scale(1.05);
+}
+
+.refresh-btn:active {
+    transform: scale(0.98);
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .count {
+        font-size: 3rem;
+    }
+
+    .table-card {
+        padding: 20px;
+    }
+}
