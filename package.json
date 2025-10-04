@@ -2,14 +2,22 @@
   "name": "beats-count",
   "version": "1.0.0",
   "description": "Track daily beats and loops production",
-  "main": "server.js",
+  "main": "main.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "electron .",
+    "web": "node server.js"
   },
-  "keywords": ["beats", "loops", "tracker"],
+  "keywords": [
+    "beats",
+    "loops",
+    "tracker"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "electron": "^38.2.1"
   }
 }

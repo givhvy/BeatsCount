@@ -1,5 +1,25 @@
+const { ipcRenderer } = require('electron');
+
 let beatsFolder = null;
 let loopsFolder = null;
+
+// Load saved folders from localStorage
+function loadSavedFolders() {
+    const savedBeatsFolder = localStorage.getItem('beatsFolder');
+    const savedLoopsFolder = localStorage.getItem('loopsFolder');
+
+    if (savedBeatsFolder) {
+        beatsFolder = savedBeatsFolder;
+        document.getElementById('beats-folder-path').textContent = beatsFolder;
+        updateBeatsCount();
+    }
+
+    if (savedLoopsFolder) {
+        loopsFolder = savedLoopsFolder;
+        document.getElementById('loops-folder-path').textContent = loopsFolder;
+        updateLoopsCount();
+    }
+}
 
 // Update dates
 function updateDates() {
@@ -13,57 +33,37 @@ function updateDates() {
     document.getElementById('loops-date').textContent = today;
 }
 
-// Handle folder selection from input
-function handleFolderSelect(type, files) {
-    if (files.length > 0) {
-        const folderPath = files[0].webkitRelativePath.split('/')[0];
-        const fullPath = files[0].path || files[0].webkitRelativePath;
-        const actualPath = fullPath.substring(0, fullPath.lastIndexOf('\\') || fullPath.lastIndexOf('/'));
+// Select folder using Electron dialog
+async function selectFolder(type) {
+    const folderPath = await ipcRenderer.invoke('select-folder');
 
+    if (folderPath) {
         if (type === 'beats') {
-            beatsFolder = { path: actualPath, files: Array.from(files) };
-            document.getElementById('beats-folder-path').textContent = actualPath;
+            beatsFolder = folderPath;
+            localStorage.setItem('beatsFolder', folderPath);
+            document.getElementById('beats-folder-path').textContent = folderPath;
             updateBeatsCount();
         } else if (type === 'loops') {
-            loopsFolder = { path: actualPath, files: Array.from(files) };
-            document.getElementById('loops-folder-path').textContent = actualPath;
+            loopsFolder = folderPath;
+            localStorage.setItem('loopsFolder', folderPath);
+            document.getElementById('loops-folder-path').textContent = folderPath;
             updateLoopsCount();
         }
     }
 }
 
-// Count files from browser selection
-function countFilesFromSelection(files, extensions) {
-    let count = 0;
-    const today = new Date();
-
-    for (const file of files) {
-        const ext = '.' + file.name.split('.').pop().toLowerCase();
-        const modified = new Date(file.lastModified);
-
-        if (extensions.includes(ext) &&
-            today.getFullYear() === modified.getFullYear() &&
-            today.getMonth() === modified.getMonth() &&
-            today.getDate() === modified.getDate()) {
-            count++;
-        }
-    }
-
-    return count;
-}
-
 // Update beats count
-function updateBeatsCount() {
-    if (beatsFolder && beatsFolder.files) {
-        const count = countFilesFromSelection(beatsFolder.files, ['.wav']);
+async function updateBeatsCount() {
+    if (beatsFolder) {
+        const count = await ipcRenderer.invoke('count-files', beatsFolder, ['.wav']);
         document.getElementById('beats-count').textContent = count;
     }
 }
 
 // Update loops count
-function updateLoopsCount() {
-    if (loopsFolder && loopsFolder.files) {
-        const count = countFilesFromSelection(loopsFolder.files, ['.mp3', '.wav']);
+async function updateLoopsCount() {
+    if (loopsFolder) {
+        const count = await ipcRenderer.invoke('count-files', loopsFolder, ['.mp3', '.wav']);
         document.getElementById('loops-count').textContent = count;
     }
 }
@@ -76,22 +76,15 @@ function refreshCounts() {
 
 // Event listeners
 document.getElementById('select-beats-folder').addEventListener('click', () => {
-    document.getElementById('beats-folder-input').click();
-});
-
-document.getElementById('beats-folder-input').addEventListener('change', (e) => {
-    handleFolderSelect('beats', e.target.files);
+    selectFolder('beats');
 });
 
 document.getElementById('select-loops-folder').addEventListener('click', () => {
-    document.getElementById('loops-folder-input').click();
-});
-
-document.getElementById('loops-folder-input').addEventListener('change', (e) => {
-    handleFolderSelect('loops', e.target.files);
+    selectFolder('loops');
 });
 
 document.getElementById('refresh-btn').addEventListener('click', refreshCounts);
 
 // Initialize
 updateDates();
+loadSavedFolders();
