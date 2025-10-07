@@ -32,7 +32,7 @@ function isModifiedToday(stats) {
 }
 
 // Count files with specific extensions modified today
-async function countFilesInFolder(folderPath, extensions) {
+async function countFilesInFolder(folderPath, extensions, recursive = false) {
     try {
         const files = await fs.readdir(folderPath);
         let count = 0;
@@ -43,15 +43,50 @@ async function countFilesInFolder(folderPath, extensions) {
 
             if (stats.isFile()) {
                 const ext = path.extname(file).toLowerCase();
-                if (extensions.includes(ext) && isModifiedToday(stats)) {
+                // If extensions is null/empty, count all files, otherwise check extension
+                const matchesExtension = !extensions || extensions.length === 0 || extensions.includes(ext);
+                if (matchesExtension && isModifiedToday(stats)) {
                     count++;
                 }
+            } else if (stats.isDirectory() && recursive) {
+                // Recursively count files in subdirectories
+                count += await countFilesInFolder(filePath, extensions, recursive);
             }
         }
 
         return count;
     } catch (error) {
         console.error('Error counting files:', error);
+        return 0;
+    }
+}
+
+// Count total files with specific extensions (all time) - recursive
+async function countTotalFilesInFolder(folderPath, extensions) {
+    try {
+        const files = await fs.readdir(folderPath);
+        let count = 0;
+
+        for (const file of files) {
+            const filePath = path.join(folderPath, file);
+            const stats = await fs.stat(filePath);
+
+            if (stats.isFile()) {
+                const ext = path.extname(file).toLowerCase();
+                // If extensions is null/empty, count all files, otherwise check extension
+                const matchesExtension = !extensions || extensions.length === 0 || extensions.includes(ext);
+                if (matchesExtension) {
+                    count++;
+                }
+            } else if (stats.isDirectory()) {
+                // Recursively count files in subdirectories
+                count += await countTotalFilesInFolder(filePath, extensions);
+            }
+        }
+
+        return count;
+    } catch (error) {
+        console.error('Error counting total files:', error);
         return 0;
     }
 }
@@ -69,8 +104,13 @@ ipcMain.handle('select-folder', async () => {
 });
 
 // Handle file counting
-ipcMain.handle('count-files', async (event, folderPath, extensions) => {
-    return await countFilesInFolder(folderPath, extensions);
+ipcMain.handle('count-files', async (event, folderPath, extensions, recursive = false) => {
+    return await countFilesInFolder(folderPath, extensions, recursive);
+});
+
+// Handle total file counting
+ipcMain.handle('count-total-files', async (_event, folderPath, extensions) => {
+    return await countTotalFilesInFolder(folderPath, extensions);
 });
 
 app.whenReady().then(createWindow);

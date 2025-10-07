@@ -14,10 +14,19 @@
             <div class="table-card" id="beats-card">
                 <h2>Number of Beats of Today</h2>
                 <div class="count" id="beats-count">0</div>
+
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="beats-progress-fill"></div>
+                    </div>
+                    <div class="progress-text" id="beats-progress-text">0/100</div>
+                </div>
+
                 <div class="info">
                     <span class="file-type">.wav files</span>
                     <span class="date" id="beats-date"></span>
                 </div>
+                <div class="total-files" id="beats-total-files">Total: 0 files</div>
                 <button class="select-folder-btn" id="select-beats-folder">Select Folder</button>
                 <div class="folder-path" id="beats-folder-path">No folder selected</div>
             </div>
@@ -25,16 +34,41 @@
             <div class="table-card" id="loops-card">
                 <h2>Number of Loops of Today</h2>
                 <div class="count" id="loops-count">0</div>
+
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="loops-progress-fill"></div>
+                    </div>
+                    <div class="progress-text" id="loops-progress-text">0/100</div>
+                </div>
+
                 <div class="info">
-                    <span class="file-type">.mp3 & .wav files</span>
+                    <span class="file-type">All files</span>
                     <span class="date" id="loops-date"></span>
                 </div>
+                <div class="total-files" id="loops-total-files">Total: 0 files</div>
                 <button class="select-folder-btn" id="select-loops-folder">Select Folder</button>
                 <div class="folder-path" id="loops-folder-path">No folder selected</div>
             </div>
         </div>
 
         <button class="refresh-btn" id="refresh-btn">Refresh Counts</button>
+
+        <div class="history-container">
+            <div class="history-card">
+                <h2>Beats History</h2>
+                <div class="history-list" id="beats-history">
+                    <div class="no-history">No history yet</div>
+                </div>
+            </div>
+
+            <div class="history-card">
+                <h2>Loops History</h2>
+                <div class="history-list" id="loops-history">
+                    <div class="no-history">No history yet</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="app.js"></script>

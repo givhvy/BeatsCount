@@ -5,7 +5,9 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "web": "node server.js"
+    "web": "node server.js",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win"
   },
   "keywords": [
     "beats",
@@ -14,10 +16,30 @@
   ],
   "author": "",
   "license": "MIT",
+  "build": {
+    "appId": "com.beatscount.app",
+    "productName": "BeatsCount",
+    "win": {
+      "target": ["nsis"]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "files": [
+      "**/*",
+      "!**/*.md",
+      "!create-icon.html",
+      "!build"
+    ]
+  },
   "dependencies": {
     "express": "^4.18.2"
   },
   "devDependencies": {
-    "electron": "^38.2.1"
+    "electron": "^38.2.1",
+    "electron-builder": "^26.0.12"
   }
 }

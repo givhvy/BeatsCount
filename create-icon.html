@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Icon Generator</title>
+</head>
+<body>
+    <canvas id="canvas" width="256" height="256"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Background gradient
+        const gradient = ctx.createLinearGradient(0, 0, 256, 256);
+        gradient.addColorStop(0, '#667eea');
+        gradient.addColorStop(1, '#764ba2');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 256, 256);
+
+        // Add rounded corners
+        ctx.globalCompositeOperation = 'destination-in';
+        ctx.beginPath();
+        ctx.roundRect(0, 0, 256, 256, 30);
+        ctx.fill();
+        ctx.globalCompositeOperation = 'source-over';
+
+        // Draw music note
+        ctx.fillStyle = 'white';
+
+        // Note circle
+        ctx.beginPath();
+        ctx.ellipse(100, 180, 25, 30, -0.3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Note stem
+        ctx.fillRect(122, 80, 12, 105);
+
+        // Note flag
+        ctx.beginPath();
+        ctx.moveTo(134, 80);
+        ctx.bezierCurveTo(160, 80, 170, 100, 170, 120);
+        ctx.bezierCurveTo(170, 130, 165, 135, 155, 135);
+        ctx.lineTo(134, 120);
+        ctx.fill();
+
+        // Counter badge
+        const badgeGradient = ctx.createLinearGradient(150, 190, 220, 220);
+        badgeGradient.addColorStop(0, '#ff6b6b');
+        badgeGradient.addColorStop(1, '#ff4757');
+        ctx.fillStyle = badgeGradient;
+        ctx.beginPath();
+        ctx.arc(185, 205, 35, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Counter number
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 36px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('1', 185, 208);
+
+        // Download link
+        setTimeout(() => {
+            const link = document.createElement('a');
+            link.download = 'icon.png';
+            link.href = canvas.toDataURL();
+            link.click();
+            console.log('Icon downloaded! Convert it to .ico format online, then save to build/icon.ico');
+        }, 100);
+    </script>
+</body>
+</html>
